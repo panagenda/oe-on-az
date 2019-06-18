@@ -4,20 +4,22 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 
 ## TL;DR
 
-- Access (https://shell.azure.com/ "shell.azure.com") and start a Bash
+- Access [shell.azure.com](https://shell.azure.com/) and start a Bash
 - Clone this repository by executing `git clone https://xxx/oe-on-az; cd oe-on-az`
 - Export your tenent id by executing `export tenentId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx`
 - Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx`
 - Execute `prep.sh` to prepare everything for Terraform
 - Execute `up.sh` to deploy OfficeExpert
-- Review our (https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf "Setup Guide") for further installation steps
+- Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps
+
+> Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
 
 ## Requirements
 
 If you want to use your local environment instead of the Azure Cloud Shell you will to fulfil the following requirements:
 - Linux shell
-- Azure CLI - download (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest "here")
-- Terraform CLI - download (https://www.terraform.io/downloads.html "here")
+- Azure CLI - download [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+- Terraform CLI - download [here](https://www.terraform.io/downloads.html)
 
 We tested the deployment with following version:
 Azure CLI: 2.0.66 and above

@@ -40,6 +40,11 @@ resource "azurerm_storage_blob" "oe" {
     storage_container_name = "${azurerm_storage_container.oe.name}"
     source_uri = "${var.source_vhd_path}"
     type = "page"
+
+    lifecycle {
+      # enable to prevent recreation
+      prevent_destroy = "false"
+    }
 }
 
 # creates virtual network
@@ -166,6 +171,11 @@ resource "azurerm_virtual_machine" "oe" {
     managed_disk_type = "Standard_LRS"
     caching           = "ReadWrite"
     create_option     = "Attach"
+  }
+
+  lifecycle {
+    # enable to prevent recreation
+    prevent_destroy = "false"
   }
 
   depends_on = [ "azurerm_managed_disk.oe"] 
