@@ -1,0 +1,3 @@
+.terraform
+creds.sh
+tfplan.out
