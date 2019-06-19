@@ -8,6 +8,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 - Clone this repository by executing `git clone https://gitlab.com/nmeisenzahl/oe-on-az.git; cd oe-on-az`
 - Export your tenent id by executing `export tenentId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 - Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
+- Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
 - Execute `prep.sh` to prepare everything for Terraform
 - Execute `up.sh` to deploy OfficeExpert
 - Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps

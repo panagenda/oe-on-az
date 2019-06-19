@@ -10,7 +10,6 @@ fi
 
 # customize those if needed
 export rg="oe-tf-rg"
-export template="https://shareddisksa.blob.core.windows.net/shareddisksc/oe.vhd"
 
 az account set --subscription $subscriptionId
 

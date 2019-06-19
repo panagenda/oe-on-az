@@ -12,7 +12,6 @@ az account set --subscription $subscriptionId
 
 # customize those if needed
 export rg="oe-tf-rg"
-export template="https://shareddisksa.blob.core.windows.net/shareddisksc/oe.vhd"
 
 # get vault
 export vaultName=$(az keyvault list --subscription=$subscriptionId -g $rg -o tsv | awk '{print $3}')
