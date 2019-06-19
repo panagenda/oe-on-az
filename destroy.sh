@@ -8,11 +8,12 @@ if [ -f "./creds.sh" ]; then
   source ./creds.sh
 fi
 
-# template url
+# customize those if needed
+export rg="oe-tf-rg"
 export template="https://shareddisksa.blob.core.windows.net/shareddisksc/oe.vhd"
 
 # get vault
-export vaultName=$(az keyvault list --subscription=$subscriptionId -o tsv | awk '{print $3}')
+export vaultName=$(az keyvault list --subscription=$subscriptionId -g $rg -o tsv | awk '{print $3}')
 
 ## extract and export secrets
 export spSecret=$(az keyvault secret show --subscription=$subscriptionId --vault-name="$vaultName" --name sp-secret -o tsv | awk '{print $5}')
