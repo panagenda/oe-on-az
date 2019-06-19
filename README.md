@@ -31,7 +31,7 @@ Terraform CLI: v0.12.0 and above
 You can customize your deployment by editing the `var.tf` file. Everything related to the Azure Vault and Storage-Account for Terraform can be customized in `prep.sh`. Change the `template` variable within the `up.sh` script to install a different version.
 
 | Variables               | Default value   | Default value                       |
-| ----------------------- |:---------------:| -------------------------------- --:| 
+| :---------------------- | :-------------: | ----------------------------------: | 
 | prefix                  | oe              | Prefix used for different resources |
 | resource_group_name     | oe-appliance    | Resource Group name                 |
 | vm_size                 | Standard_B2ms   | VM size                             |
