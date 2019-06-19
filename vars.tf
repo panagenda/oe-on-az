@@ -1,6 +1,6 @@
 # Resource Group
 variable resource_group_name {
-    default = "oe-appliance"
+    default = "oe-rg"
 }
 
 # virutal machine size
