@@ -48,4 +48,4 @@ terraform destroy -auto-approve \
     -var "source_vhd_path=$template"
 
 ## delete TF stuff
-az group delete -y -n oe-tf-rg
+az group delete -y -n $rg
