@@ -9,6 +9,8 @@ if [ -f "./creds.sh" ]; then
   source ./creds.sh
 fi
 
+az account set --subscription $subscriptionId
+
 # customize those if needed
 export rg="oe-tf-rg"
 export location="West Europe"
