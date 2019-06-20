@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "oe" {
     name = "${var.prefix}sa${random_string.id.result}"
     resource_group_name = "${azurerm_resource_group.oe.name}"
     location            = "${azurerm_resource_group.oe.location}"
-    account_kind             = "Storage"
+    account_kind             = "StorageV2"
     account_tier             = "Standard"
     account_replication_type = "LRS"
 }
