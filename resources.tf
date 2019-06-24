@@ -122,6 +122,32 @@ resource "azurerm_network_security_rule" "oe_https" {
   resource_group_name         = "${azurerm_resource_group.oe.name}"
   network_security_group_name = "${azurerm_network_security_group.oe.name}"
 }
+resource "azurerm_network_security_rule" "oe_kafka" {
+  name                        = "${var.prefix}-sec-role-kafka"
+  priority                    = 104
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "29092"
+  source_address_prefixes     = "${var.source_address_prefixes}"
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = "${azurerm_resource_group.oe.name}"
+  network_security_group_name = "${azurerm_network_security_group.oe.name}"
+}
+resource "azurerm_network_security_rule" "oe_vnc" {
+  name                        = "${var.prefix}-sec-role-vnc"
+  priority                    = 105
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "5901"
+  source_address_prefixes     = "${var.source_address_prefixes}"
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = "${azurerm_resource_group.oe.name}"
+  network_security_group_name = "${azurerm_network_security_group.oe.name}"
+}
 
 # creates nic
 resource "azurerm_network_interface" "oe" {
