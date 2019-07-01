@@ -23,8 +23,14 @@ variable location {
     default = "West Europe"
 }
 
-# Source IP addresses
+# Source IP addresses for OE access
 variable source_address_prefixes {
+    type    = "list"
+    default = ["127.0.0.1"]
+}
+
+# Source IP addresses of OE bots
+variable source_address_prefixes_bots {
     type    = "list"
     default = ["127.0.0.1"]
 }

@@ -179,6 +179,34 @@ resource "azurerm_network_security_rule" "oe_incoming" {
   depends_on = [ "azurerm_public_ip.oe"] 
 }
 
+resource "azurerm_network_security_rule" "oe_bots_zookeeper" {
+  name                        = "${var.prefix}-sec-role-oe-bots-zookeeper"
+  priority                    = 108
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "22181"
+  source_address_prefixes     = "${var.source_address_prefixes_bots}"
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = "${azurerm_resource_group.oe.name}"
+  network_security_group_name = "${azurerm_network_security_group.oe.name}"
+}
+
+resource "azurerm_network_security_rule" "oe_bots_kafka" {
+  name                        = "${var.prefix}-sec-role-oe-bots-kafka"
+  priority                    = 109
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "29092"
+  source_address_prefixes     = "${var.source_address_prefixes_bots}"
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = "${azurerm_resource_group.oe.name}"
+  network_security_group_name = "${azurerm_network_security_group.oe.name}"
+}
+
 # creates nic
 resource "azurerm_network_interface" "oe" {
   name                      = "${var.prefix}-nic"
