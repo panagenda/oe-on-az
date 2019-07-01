@@ -149,6 +149,36 @@ resource "azurerm_network_security_rule" "oe_vnc" {
   network_security_group_name = "${azurerm_network_security_group.oe.name}"
 }
 
+resource "azurerm_network_security_rule" "oe_zookeeper" {
+  name                        = "${var.prefix}-sec-role-zookeeper"
+  priority                    = 106
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "22181"
+  source_address_prefixes     = "${var.source_address_prefixes}"
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = "${azurerm_resource_group.oe.name}"
+  network_security_group_name = "${azurerm_network_security_group.oe.name}"
+}
+
+resource "azurerm_network_security_rule" "oe_incoming" {
+  name                        = "${var.prefix}-sec-role-oe-incoming"
+  priority                    = 107
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefixes     = ["${azurerm_public_ip.oe.ip_address}"]
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = "${azurerm_resource_group.oe.name}"
+  network_security_group_name = "${azurerm_network_security_group.oe.name}"
+
+  depends_on = [ "azurerm_public_ip.oe"] 
+}
+
 # creates nic
 resource "azurerm_network_interface" "oe" {
   name                      = "${var.prefix}-nic"
