@@ -30,14 +30,15 @@ We tested the deployment with following version:
 
 You can customize your deployment by editing the `var.tf` file. 
 
-| Variables               | Default value   | Details                             |
-| :---------------------- | :-------------- | :---------------------------------- | 
-| prefix                  | oe              | Prefix used for different resources |
-| resource_group_name     | oe-appliance    | Resource Group name                 |
-| vm_size                 | Standard_B2ms   | VM size                             |
-| location                | West Europe     | Resource Location                   |
-| source_address_prefixes | -               | External IPs allowed to access OE   |
-| tags                    | production      | tag name                            |
+| Variables                    | Default value   | Details                             |
+| :--------------------------- | :-------------- | :---------------------------------- | 
+| prefix                       | oe              | Prefix used for different resources |
+| resource_group_name          | oe-appliance    | Resource Group name                 |
+| vm_size                      | Standard_B2ms   | VM size                             |
+| location                     | West Europe     | Resource Location                   |
+| source_address_prefixes      | -               | External IPs allowed to access OE   |
+| source_address_prefixes_bots | -               | Bots IPs allowed to access OE       |
+| tags                         | production      | tag name                            |
 
 Everything related to the Azure Vault and Storage Account for Terraform can be customized in `prep.sh`.
 
