@@ -25,7 +25,7 @@ export scName=$(az keyvault secret show --subscription=$subscriptionId --vault-n
 
 # export secrets 
 export ARM_SUBSCRIPTION_ID=$subscriptionId
-export ARM_TENANT_ID=$tenentId
+export ARM_TENANT_ID=$tenantId
 export ARM_CLIENT_ID=$spId
 export ARM_CLIENT_SECRET=$spSecret
 
