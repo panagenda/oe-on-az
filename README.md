@@ -9,8 +9,8 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 3. Export your tenant id by executing `export tenantId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 4. Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
-6. Execute `prep.sh` to prepare everything for Terraform
-7. Execute `up.sh` to deploy OfficeExpert
+6. Execute `./prep.sh` to prepare everything for Terraform
+7. Execute `./up.sh` to deploy OfficeExpert
 8. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps
 
 > Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
