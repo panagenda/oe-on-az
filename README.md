@@ -13,7 +13,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 7. Manually grant API permission for the created application
 8. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
 9. Execute `./up.sh` to deploy OfficeExpert
-11. Manually grant API permission for the Azure AD application pana-oe-app
+11. Manually grant API permission for the created "pana-oe-sp-*" application
 12. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
 
 > Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
@@ -73,4 +73,6 @@ Everything related to the Azure Vault and Storage Account for Terraform can be c
 
 ## Destroy the deployment
 
-Run `destroy.sh` to destroy your deployment. This will destroy all created resources!
+1. Export your tenant id by executing `export tenantId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
+2. Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
+3. Run `destroy.sh` to destroy your deployment. This will destroy all created resources!
