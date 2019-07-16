@@ -12,12 +12,13 @@ fi
 az account set --subscription $subscriptionId
 
 # customize those if needed
-export rg="oe-tf-rg"
+export rg="pana-oe-tf-rg"
 export location="West Europe"
 export sku="Standard_LRS"
 export vaultName="oevault$RANDOM$RANDOM"
-export saName="oesa$RANDOM$RANDOM"
-export scName="oesc$RANDOM$RANDOM"
+export saName="panaoesa$RANDOM$RANDOM"
+export scName="panaoesc$RANDOM$RANDOM"
+export spName="pana-oe-sp-$RANDOM$RANDOM"
 
 # creates a new resource group which will be used for the vault and TF state
 az group create --name "$rg" \
@@ -96,7 +97,7 @@ fi
 
 # creates a service principal
 # only valid for 1 year. unable to define years due to a bug https://github.com/Azure/azure-cli/issues/700
-export sp=$(az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
+export sp=$(az ad sp create-for-rbac --name $spName --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
 
 if test $? -ne 0
 then
@@ -124,3 +125,36 @@ then
 else
     echo "secrets are saved in vault..."
 fi
+
+# add azure ad permission 
+az ad app permission add --id $spId --api 00000002-0000-0000-c000-000000000000 --api-permissions 1cda74f2-2616-4834-b122-5cb1b07f8a59=Role
+if test $? -ne 0
+then
+    echo "api permissions couldn't be added..."
+	exit
+else
+    echo "api permissions added..."
+fi
+
+az ad app permission add --id $spId --api 00000002-0000-0000-c000-000000000000 --api-permissions 78c8a3c8-a07e-4b9e-af1b-b5ccab50a175=Role
+if test $? -ne 0
+then
+    echo "api permissions couldn't be added..."
+	exit
+else
+    echo "api permissions added..."
+fi
+
+#greant permissions if possible
+az ad app permission grant --id $spId --api 00000002-0000-0000-c000-000000000000
+if test $? -ne 0
+then
+    echo "api permissions couldn't be granted..."
+	exit
+else
+    echo "api permissions granted..."
+fi
+
+echo ""
+echo "-----"
+echo "You need to manually grant api permissions for application $spName with id $spId"
