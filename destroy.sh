@@ -11,7 +11,7 @@ fi
 az account set --subscription $subscriptionId
 
 # customize those if needed
-export rg="oe-tf-rg"
+export rg="pana-oe-tf-rg"
 
 # get vault
 export vaultName=$(az keyvault list --subscription=$subscriptionId -g $rg -o tsv | awk '{print $3}')
@@ -46,6 +46,17 @@ fi
 # destroy deployment
 terraform destroy -auto-approve \
     -var "source_vhd_path=$template"
+
+if test $? -ne 0
+then
+    echo "tf destroy finished with error..."
+	exit
+else
+    echo "tf destroy done..."
+fi
+
+# delete sp
+az ad sp delete --id $spId
 
 ## delete TF stuff
 az group delete -y -n $rg

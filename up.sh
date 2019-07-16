@@ -9,7 +9,7 @@ if [ -f "./creds.sh" ]; then
 fi
 
 # customize those if needed
-export rg="oe-tf-rg"
+export rg="pana-oe-tf-rg"
 
 az account set --subscription $subscriptionId
 
