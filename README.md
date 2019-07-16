@@ -11,7 +11,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
 6. Execute `./prep.sh` to prepare everything for Terraform
 7. Manually grant API permission for the created application
-8. Customize the `var.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi var.tf`)
+8. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
 9. Execute `./up.sh` to deploy OfficeExpert
 11. Manually grant API permission for the Azure AD application pana-oe-app
 12. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
@@ -56,7 +56,7 @@ We tested the deployment with following version:
 
 ## Customize the deployment
 
-You can customize your deployment by editing the `var.tf` file. 
+You can customize your deployment by editing the `vars.tf` file. 
 
 | Variables                    | Default value   | Details                             |
 | :--------------------------- | :-------------- | :---------------------------------- | 
