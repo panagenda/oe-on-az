@@ -264,3 +264,67 @@ resource "azurerm_virtual_machine" "oe" {
 
   depends_on = [ "azurerm_managed_disk.oe"] 
 }
+
+# creates ad app
+resource "random_string" "secret" {
+  length = 32
+  special = true
+  lower = true
+  upper = true
+  number = true
+}
+
+resource "azuread_application" "oe" {
+  name                       = "${var.prefix}-app"
+  homepage                   = "https://${var.fqdn}"
+  reply_urls                 = ["https://${var.fqdn}/teams/auth/silent-end"]
+  type                       = "webapp/api"
+  available_to_other_tenants = false
+  oauth2_allow_implicit_flow = true
+
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000"
+
+    resource_access {
+      id = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
+      type = "Scope"
+    }
+    resource_access {
+      id = "a154be20-db9c-4678-8ab7-66f6cc099a59"
+      type = "Scope"
+    }
+    resource_access {
+      id = "230c1aed-a721-4c5d-9cb4-a90514e508ef"
+      type = "Role"
+    }
+    resource_access {
+      id = "7b2449af-6ccd-4f4d-9f78-e550c193f0d1"
+      type = "Role"
+    }
+    resource_access {
+      id = "5b567255-7703-4780-807c-7be8301ae99b"
+      type = "Role"
+    }
+    resource_access {
+      id = "7ab1d382-f21e-4acd-a863-ba3e13f7da61"
+      type = "Role"
+    }
+  }
+
+  required_resource_access {
+    resource_app_id = "c5393580-f805-4401-95e8-94b7a6ef2fc2"
+
+    resource_access {
+      id = "e2cea78f-e743-4d8f-a16a-75b629a038ae"
+      type = "Role"
+    }
+  }
+}
+
+resource "azuread_application_password" "oe" {
+  application_id        = "${azuread_application.oe.id}"
+  value                = "${random_string.secret.result}"
+  end_date             = "2999-01-01T01:01:01Z"
+
+  depends_on = [ "random_string.secret"] 
+}
