@@ -18,7 +18,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 
 > Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
 
-## Used Azure Resources
+## Deployment details
 
 The above steps steps deploying the following Azure resources.
 
