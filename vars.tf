@@ -1,6 +1,11 @@
 # Resource Group
 variable resource_group_name {
-    default = "oe-rg"
+    default = "pana-oe-rg"
+}
+
+# FQDN of OE
+variable fqdn {
+    default = "officeexpert.example.com"
 }
 
 # virutal machine size
@@ -8,14 +13,9 @@ variable vm_size {
     default = "Standard_B2ms"
 }
 
-# managed disk path
-variable "source_vhd_path" {
-    default = ""
-}
-
 # prefix
 variable prefix {
-    default = "oe"
+    default = "panaoe"
 }
 
 # Location
@@ -38,4 +38,9 @@ variable source_address_prefixes_bots {
 # Tags
 variable tags {
     default = "production"
+}
+
+# managed disk path
+variable "source_vhd_path" {
+    default = ""
 }
