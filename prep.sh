@@ -96,8 +96,7 @@ else
 fi
 
 # creates a service principal
-# only valid for 1 year. unable to define years due to a bug https://github.com/Azure/azure-cli/issues/700
-export sp=$(az ad sp create-for-rbac --name $spName --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
+export sp=$(az ad sp create-for-rbac --name $spName --years 99 --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
 
 if test $? -ne 0
 then
