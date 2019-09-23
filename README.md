@@ -10,11 +10,9 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 4. Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
 6. Execute `./prep.sh` to prepare everything for Terraform
-7. Manually grant API permission for the created "pana-oe-sp-*" application
-8. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
+7. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
 9. Execute `./up.sh` to deploy OfficeExpert
-10. Manually grant API permission for the created for the created "panaoe" application
-11. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
+10. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
 
 > Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
 
@@ -62,7 +60,6 @@ You can customize your deployment by editing the `vars.tf` file.
 | :--------------------------- | :-------------- | :---------------------------------- | 
 | prefix                       | oe              | Prefix used for different resources |
 | resource_group_name          | oe-appliance    | Resource Group name                 |
-| fqdn                         | -               | FQDN                                |
 | vm_size                      | Standard_B2ms   | VM size                             |
 | location                     | West Europe     | Resource Location                   |
 | source_address_prefixes      | -               | External IPs allowed to access OE   |

@@ -6,10 +6,6 @@ provider "random" {
     version = "~> 2.1"
 }
 
-provider "azuread" {
-  version = "~> 0.1"
-}
-
 terraform {
     backend "azurerm" {
         key = "oe.terraform.tfstate"

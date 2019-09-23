@@ -124,36 +124,3 @@ then
 else
     echo "secrets are saved in vault..."
 fi
-
-# add azure ad permission 
-az ad app permission add --id $spId --api 00000002-0000-0000-c000-000000000000 --api-permissions 1cda74f2-2616-4834-b122-5cb1b07f8a59=Role
-if test $? -ne 0
-then
-    echo "api permissions couldn't be added..."
-	exit
-else
-    echo "api permissions added..."
-fi
-
-az ad app permission add --id $spId --api 00000002-0000-0000-c000-000000000000 --api-permissions 78c8a3c8-a07e-4b9e-af1b-b5ccab50a175=Role
-if test $? -ne 0
-then
-    echo "api permissions couldn't be added..."
-	exit
-else
-    echo "api permissions added..."
-fi
-
-#greant permissions if possible
-az ad app permission grant --id $spId --api 00000002-0000-0000-c000-000000000000
-if test $? -ne 0
-then
-    echo "api permissions couldn't be granted..."
-	exit
-else
-    echo "api permissions granted..."
-fi
-
-echo ""
-echo "-----"
-echo "You need to manually grant api permissions for application $spName with id $spId"

@@ -3,11 +3,6 @@ variable resource_group_name {
     default = "pana-oe-rg"
 }
 
-# FQDN of OE
-variable fqdn {
-    default = "officeexpert.example.com"
-}
-
 # virutal machine size
 variable vm_size {
     default = "Standard_B2ms"
