@@ -47,181 +47,6 @@ resource "azurerm_storage_blob" "oe" {
     }
 }
 
-# creates virtual network
-resource "azurerm_virtual_network" "oe" {
-  name                = "${var.prefix}-network"
-  address_space       = ["10.0.0.0/16"]
-  location            = "${azurerm_resource_group.oe.location}"
-  resource_group_name = "${azurerm_resource_group.oe.name}"
-}
-
-# creates internal subnet
-resource "azurerm_subnet" "oe" {
-  name                 = "${var.prefix}-subnet"
-  resource_group_name  = "${azurerm_resource_group.oe.name}"
-  virtual_network_name = "${azurerm_virtual_network.oe.name}"
-  address_prefix       = "10.0.2.0/24"
-}
-# requests public ip
-resource "azurerm_public_ip" "oe" {
-  name                    = "${var.prefix}-pip"
-  location                = "${azurerm_resource_group.oe.location}"
-  resource_group_name     = "${azurerm_resource_group.oe.name}"
-  allocation_method       = "Static"
-  idle_timeout_in_minutes = 30
-
-  tags = {
-    environment = "${var.tags}"
-  }
-}
-
-# creates network security group
-resource "azurerm_network_security_group" "oe" {
-  name                        = "${var.prefix}-secgroup"
-  location                    = "${azurerm_resource_group.oe.location}"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-}
-
-# creates network security group roles
-resource "azurerm_network_security_rule" "oe_ssh" {
-  name                        = "${var.prefix}-sec-role-ssh"
-  priority                    = 101
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "22"
-  source_address_prefixes     = "${var.source_address_prefixes}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-resource "azurerm_network_security_rule" "oe_http" {
-  name                        = "${var.prefix}-sec-role-http"
-  priority                    = 102
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "80"
-  source_address_prefixes     = "${var.source_address_prefixes}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-resource "azurerm_network_security_rule" "oe_https" {
-  name                        = "${var.prefix}-sec-role-https"
-  priority                    = 103
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "443"
-  source_address_prefixes     = "${var.source_address_prefixes}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-resource "azurerm_network_security_rule" "oe_kafka" {
-  name                        = "${var.prefix}-sec-role-kafka"
-  priority                    = 104
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "29092"
-  source_address_prefixes     = "${var.source_address_prefixes}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-resource "azurerm_network_security_rule" "oe_vnc" {
-  name                        = "${var.prefix}-sec-role-vnc"
-  priority                    = 105
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "5901"
-  source_address_prefixes     = "${var.source_address_prefixes}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-
-resource "azurerm_network_security_rule" "oe_zookeeper" {
-  name                        = "${var.prefix}-sec-role-zookeeper"
-  priority                    = 106
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "22181"
-  source_address_prefixes     = "${var.source_address_prefixes}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-
-resource "azurerm_network_security_rule" "oe_incoming" {
-  name                        = "${var.prefix}-sec-role-oe-incoming"
-  priority                    = 107
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefixes     = ["${azurerm_public_ip.oe.ip_address}"]
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-
-  depends_on = [ "azurerm_public_ip.oe"] 
-}
-
-resource "azurerm_network_security_rule" "oe_bots_zookeeper" {
-  name                        = "${var.prefix}-sec-role-oe-bots-zookeeper"
-  priority                    = 108
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "22181"
-  source_address_prefixes     = "${var.source_address_prefixes_bots}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-
-resource "azurerm_network_security_rule" "oe_bots_kafka" {
-  name                        = "${var.prefix}-sec-role-oe-bots-kafka"
-  priority                    = 109
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "29092"
-  source_address_prefixes     = "${var.source_address_prefixes_bots}"
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = "${azurerm_resource_group.oe.name}"
-  network_security_group_name = "${azurerm_network_security_group.oe.name}"
-}
-
-# creates nic
-resource "azurerm_network_interface" "oe" {
-  name                      = "${var.prefix}-nic"
-  location                  = "${azurerm_resource_group.oe.location}"
-  resource_group_name       = "${azurerm_resource_group.oe.name}"
-  network_security_group_id = "${azurerm_network_security_group.oe.id}"
-
-  ip_configuration {
-    name                          = "${var.prefix}-nic"
-    subnet_id                     = "${azurerm_subnet.oe.id}"
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = "${azurerm_public_ip.oe.id}"
-  }
-}
-
 # imports managed disk
 resource "azurerm_managed_disk" "oe" {
 
@@ -237,30 +62,24 @@ resource "azurerm_managed_disk" "oe" {
   depends_on = [ "azurerm_storage_blob.oe"] 
 }
 
-# creates virtual machine
-resource "azurerm_virtual_machine" "oe" {
-  name                  = "${var.prefix}-vm"
-  location              = "${azurerm_resource_group.oe.location}"
-  resource_group_name   = "${azurerm_resource_group.oe.name}"
-  network_interface_ids = ["${azurerm_network_interface.oe.id}"]
-  vm_size               = "${var.vm_size}"
-  # deletes disks on destroy
-  delete_os_disk_on_termination = true
-  delete_data_disks_on_termination = true
+data "azurerm_subnet" "oe" {
+  name                 = "${var.subnet}"
+  count                = "${var.subnet == "" ? 0 : 1}"
+  virtual_network_name = "${var.vnet}"
+  resource_group_name  = "${var.rg}"
+}
 
-  storage_os_disk {
-    name              = "${var.prefix}-osdisk"
-    os_type           = "Linux"
-    managed_disk_id   = "${azurerm_managed_disk.oe.id}"
-    managed_disk_type = "Standard_LRS"
-    caching           = "ReadWrite"
-    create_option     = "Attach"
+# creates nic
+resource "azurerm_network_interface" "oe" {
+  name                      = "${var.prefix}-nic"
+  count                     = "${var.subnet == "" ? 0 : 1}"
+  location                  = "${azurerm_resource_group.oe.location}"
+  resource_group_name       = "${azurerm_resource_group.oe.name}"
+
+  ip_configuration {
+    name                          = "${var.prefix}-nic"
+    subnet_id                     = "${data.azurerm_subnet.oe[0].id}"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "${var.ip}"
   }
-
-  lifecycle {
-    # enable to prevent recreation
-    prevent_destroy = "false"
-  }
-
-  depends_on = [ "azurerm_managed_disk.oe"] 
 }
