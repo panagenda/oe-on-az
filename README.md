@@ -61,6 +61,7 @@ You can customize your deployment by editing the `vars.tf` file.
 | prefix                       | oe              | Prefix used for different resources |
 | resource_group_name          | oe-appliance    | Resource Group name                 |
 | vm_size                      | Standard_B2ms   | VM size                             |
+| data_disk                    | 100             | size of the data disk (GB)          |
 | location                     | West Europe     | Resource Location                   |
 | source_address_prefixes      | -               | External IPs allowed to access OE   |
 | source_address_prefixes_bots | -               | Bots IPs allowed to access OE       |

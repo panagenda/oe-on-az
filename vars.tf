@@ -8,6 +8,11 @@ variable vm_size {
     default = "Standard_B2ms"
 }
 
+# data disk size
+variable data_disk {
+    default = "100"
+}
+
 # prefix
 variable prefix {
     default = "panaoe"

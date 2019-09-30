@@ -27,6 +27,24 @@ resource "azurerm_virtual_machine" "oe" {
   depends_on = [ "azurerm_managed_disk.oe"] 
 }
 
+# creates data disk - static private ip
+resource "azurerm_managed_disk" "oe-data" {
+  name                 = "${var.prefix}-data"
+  count                = "${var.subnet == "" ? 0 : 1}"
+  location             = "${azurerm_resource_group.oe.location}"
+  resource_group_name  = "${azurerm_resource_group.oe.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "${var.data_disk}"
+}
+resource "azurerm_virtual_machine_data_disk_attachment" "oe" {
+  managed_disk_id    = "${azurerm_managed_disk.oe-data[0].id}"
+  count                 = "${var.subnet == "" ? 0 : 1}"
+  virtual_machine_id = "${azurerm_virtual_machine.oe[0].id}"
+  lun                = "1"
+  caching            = "ReadWrite"
+}
+
 # creates virtual machine - static puplic ip (custom network deployment)
 resource "azurerm_virtual_machine" "oe-custom-public" {
   name                  = "${var.prefix}-vm"
@@ -54,4 +72,22 @@ resource "azurerm_virtual_machine" "oe-custom-public" {
   }
 
   depends_on = [ "azurerm_managed_disk.oe"] 
+}
+
+# creates data disk - static puplic ip (custom network deployment)
+resource "azurerm_managed_disk" "oe-data-custom-public" {
+  name                 = "${var.prefix}-data"
+  count                = "${var.subnet == "" ? 1 : 0}"
+  location             = "${azurerm_resource_group.oe.location}"
+  resource_group_name  = "${azurerm_resource_group.oe.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "${var.data_disk}"
+}
+resource "azurerm_virtual_machine_data_disk_attachment" "oe-custom-public" {
+  managed_disk_id    = "${azurerm_managed_disk.oe-data-custom-public[0].id}"
+  count                 = "${var.subnet == "" ? 1 : 0}"
+  virtual_machine_id = "${azurerm_virtual_machine.oe-custom-public[0].id}"
+  lun                = "1"
+  caching            = "ReadWrite"
 }
