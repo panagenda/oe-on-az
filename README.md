@@ -13,6 +13,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 7. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
 9. Execute `./up.sh` to deploy OfficeExpert
 10. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
+11. Optional: Automatically confiure the Appliance by executing the config script (more information below)
 
 > Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
 
@@ -40,6 +41,18 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 - Network Interface
 - Public IP
 - Network Security Group
+
+### config.sh
+
+The config script will finalize the Appliance configuration.
+
+- Sets Hostname and Timezone
+- Configures and starts Office Experts
+- Sets a new root password
+
+Execute `./config.sh "my-oe.my-domain.com" "Europe/Berlin" "my-oe-secret" "my-root-password"`
+
+Make sure sure your Appliance is reachable via SSH and the provided hostname before!
 
 ## Requirements
 
