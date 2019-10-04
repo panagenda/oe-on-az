@@ -44,7 +44,7 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 
 ### config.sh
 
-The config script will finalize the Appliance configuration.
+The config script will finalize the Appliance configuration. It can only be used with the automated public IP deployment.
 
 - Sets Hostname and Timezone
 - Configures and starts Office Experts
