@@ -34,8 +34,7 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 - Storage Account to store Virtual Machine template in a Blob Storage Account
 - Virtual Machine
 - Disk
-- Virtual network interface (either public or private)
-- Virtual Network (public IP only)
+- Virtual Network Interface
 - Network Interface (public IP only)
 - Network Security Group (public IP only)
 
