@@ -15,21 +15,14 @@ export rgtf="pana-oe-tf-rg"
 export secGroup="panaoe-secgroup"
 
 # get input
+if [[ -z $1 || -z $2 || -z $3 || -z $4 ]] ; then
+    echo "Please provide all required parameters."
+    exit
+fi
 
-if [ -z $1 ]; then
-    echo "Please provide all required parameters."
-    exit
-fi
-if [ -z $2 ]; then
-    echo "Please provide all required parameters."
-    exit
-fi
-if [ -z $3 ]; then
-    echo "Please provide all required parameters."
-    exit
-fi
-if [ -z $4 ]; then
-    echo "Please provide all required parameters."
+export test=$(echo -n $3 | wc -c)
+if test $test -lt "8" ; then
+    echo "Please provide at least 8 chars as secret value."
     exit
 fi
 
