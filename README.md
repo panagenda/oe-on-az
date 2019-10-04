@@ -1,6 +1,6 @@
 # panagenda OfficeExpert on Azure
 
-This repository contains everything needed to deploy panagenda OfficeExpert in Azure.
+This repository contains everything needed to deploy panagenda OfficeExpert on Azure.
 
 ## TL;DR
 
@@ -12,10 +12,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert in A
 6. Execute `./prep.sh` to prepare everything for Terraform
 7. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
 9. Execute `./up.sh` to deploy OfficeExpert
-10. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
-11. Optional: Automatically confiure the Appliance by executing the config script (more information below)
-
-> Do not use it in production! Data may get lost! Enable `prevent_destroy = true` to prevent resource recreation.
+10. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps) or run the automated configuration (more details below)
 
 ## Deployment details
 
@@ -32,21 +29,21 @@ OfficeExpert itself will be deployed using Terraform. This script will deploy ev
 
 ### up.sh
 
-This will run the Terraform project to deploy everything related to OfficeExpert.
+This will run the Terraform project to deploy everything related to OfficeExpert. Depening on your configuration (var.tf) the Appliance will be deployed either into an existing Azure virtual network or will create a new one including a public IP.
 
 - Storage Account to store Virtual Machine template in a Blob Storage Account
 - Virtual Machine
 - Disk
-- Virtual Network
-- Network Interface
-- Public IP
-- Network Security Group
+- Virtual Network (public IP only)
+- Network Interface (public IP only)
+- Public IP (public IP only)
+- Network Security Group (public IP only)
 
 ### config.sh
 
-The config script will finalize the Appliance configuration. It can only be used with the automated public IP deployment.
+The config script will finalize the Appliance configuration. This step is only supported with the public IP deployment option. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further information on how to configure the Appliance manually. 
 
-- Sets Hostname and Timezone
+- Sets Hostname and timezone
 - Configures and starts Office Experts
 - Sets a new root password
 
@@ -57,7 +54,7 @@ Make sure sure your Appliance is reachable via SSH and the provided hostname bef
 ## Requirements
 
 If you want to use your local environment instead of the Azure Cloud Shell you will need to fulfil the following requirements:
-- Linux shell
+- Linux shell or Azure Cloud Shell
 - Azure CLI - download [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 - Terraform CLI - download [here](https://www.terraform.io/downloads.html)
 
@@ -78,7 +75,10 @@ You can customize your deployment by editing the `vars.tf` file.
 | location                     | West Europe     | Resource Location                   |
 | source_address_prefixes      | -               | External IPs allowed to access OE   |
 | source_address_prefixes_bots | -               | Bots IPs allowed to access OE       |
-| tags                         | production      | tag name                            |
+| rg                           | -               | Resource Group of an existing VNet  |
+| vnet                         | -               | Name of an existing VNet            |
+| subnet                       | -               | Subnat name of an existing VNet     |
+| ip                           | -               | IP of an existing VNet              |
 
 Everything related to the Azure Vault and Storage Account for Terraform can be customized in `prep.sh`.
 
