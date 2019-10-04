@@ -34,9 +34,9 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 - Storage Account to store Virtual Machine template in a Blob Storage Account
 - Virtual Machine
 - Disk
+- Virtual network interface (either public or private)
 - Virtual Network (public IP only)
 - Network Interface (public IP only)
-- Public IP (public IP only)
 - Network Security Group (public IP only)
 
 ### config.sh
@@ -60,7 +60,7 @@ If you want to use your local environment instead of the Azure Cloud Shell you w
 
 We tested the deployment with following version:
 - Azure CLI 2.0.66 and above
-- Terraform  v0.12 and above
+- Terraform v0.12 and above
 
 ## Customize the deployment
 
@@ -77,7 +77,7 @@ You can customize your deployment by editing the `vars.tf` file.
 | source_address_prefixes_bots | -               | Bots IPs allowed to access OE       |
 | rg                           | -               | Resource Group of an existing VNet  |
 | vnet                         | -               | Name of an existing VNet            |
-| subnet                       | -               | Subnat name of an existing VNet     |
+| subnet                       | -               | Subnet name of an existing VNet     |
 | ip                           | -               | IP of an existing VNet              |
 
 Everything related to the Azure Vault and Storage Account for Terraform can be customized in `prep.sh`.
