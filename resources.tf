@@ -57,7 +57,7 @@ resource "azurerm_managed_disk" "oe" {
   create_option        = "Import"
   os_type              = "Linux"
   source_uri           = "${azurerm_storage_blob.oe.url}"
-  disk_size_gb         = "120"
+  disk_size_gb         = "20"
 
   depends_on = [ "azurerm_storage_blob.oe"] 
 }
