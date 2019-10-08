@@ -1,3 +1,4 @@
 .terraform
 creds.sh
 tfplan.out
+vars.tf.test

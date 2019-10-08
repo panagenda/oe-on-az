@@ -58,5 +58,9 @@ fi
 # delete sp
 az ad sp delete --id $spId
 
-## delete TF stuff
+# delete TF stuff
 az group delete -y -n $rg
+
+# delete local tf folder
+rm -rf .terraform
+ 

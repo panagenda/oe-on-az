@@ -1,5 +1,6 @@
 #!/bin/bash
 # This script is to configure the OE appliance
+# Example: ./config.sh "my-oe.my-domain.com" "Europe/Berlin" "my-oe-secret" "my-root-password"
 
 set -e
 
@@ -12,6 +13,23 @@ fi
 export rg="pana-oe-rg"
 export rgtf="pana-oe-tf-rg"
 export secGroup="panaoe-secgroup"
+
+# get input
+if [[ -z $1 || -z $2 || -z $3 || -z $4 ]] ; then
+    echo "Please provide all required parameters."
+    exit
+fi
+
+export test=$(echo -n $3 | wc -c)
+if test $test -lt "8" ; then
+    echo "Please provide at least 8 chars as secret value."
+    exit
+fi
+
+export hostname=$1
+export timezone=$2
+export secret=$3
+export rootPsw=$4
 
 az account set --subscription $subscriptionId
 
@@ -33,6 +51,10 @@ else
     echo "login done..."
 fi
 
+# get ip
+export ip=$(terraform output | grep ip_address | awk '{print $3}')
+
+configureAccess () {
 # get public ip
 export mypublicIp=$(dig +short myip.opendns.com @resolver1.opendns.com.)
 
@@ -49,12 +71,17 @@ then
 else
     echo "security policy created..."
 fi
+}
 
-export publicIp=$(terraform output | grep public_ip_address | awk '{print $3}')
-
+configureAppliance () {
 #configure appliance
 set +e
-ssh -o "StrictHostKeyChecking no" root@$publicIp '/opt/panagenda/appdata/setup/setup.sh'
+echo "Please provide the root password"
+ssh -o "StrictHostKeyChecking no" root@$ip "echo $hostname >> /etc/hostname && \
+ hostnamectl set-hostname $hostname && \
+ timedatectl set-timezone $timezone && \
+ /opt/panagenda/appdata/setup/setup.sh $hostname $secret && \
+ echo $rootPsw | passwd --stdin root"
 
 if test $? -ne 0
 then
@@ -63,7 +90,9 @@ then
 else
     echo "appliance configured..."
 fi
+}
 
+removeAccess () {
 # delete network rule
 az network nsg rule delete -g $rg --nsg-name $secGroup -n oe-config
 
@@ -74,6 +103,17 @@ then
 else
     echo "security policy deleted..."
 fi
+}
 
-# force logout
-az logout  
+# get network policy groups
+export nsg=$(az network nsg list --resource-group $rg --subscription $subscriptionId | grep -i $secGroup | wc -l | awk '{print $1}')
+
+# runs functions
+if test $nsg -ge 1
+then
+    configureAccess
+    configureAppliance
+    removeAccess
+else
+    configureAppliance
+fi
