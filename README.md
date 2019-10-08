@@ -5,7 +5,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 ## TL;DR
 
 1. Access [shell.azure.com](https://shell.azure.com/) and start a Bash
-2. Clone this repository by executing `git clone https://gitlab.com/nmeisenzahl/oe-on-az.git; cd oe-on-az`
+2. Clone this repository by executing `git clone https://github.com/panagenda/oe-on-az.git; cd oe-on-az`
 3. Export your tenant id by executing `export tenantId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 4. Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
