@@ -13,7 +13,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 7. Execute `./prep.sh` to prepare everything for Terraform
 8. Customize the `vars.tf` based on your needs
 9. Execute `./up.sh` to deploy OfficeExpert
-10. The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9). Alternatively you can execute a final config script (only supported for the public IP setup) --> more details below [config.sh]()
+10. The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9). Alternatively you can execute a final config script (only supported for the public IP setup) --> more details below config.sh
 
 ## Deployment details
 
@@ -39,7 +39,7 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 - Network Interface (public IP only)
 - Network Security Group (public IP only)
 
-### config.sh
+### config.sh - optional
 
 > Make sure sure your Appliance is reachable via SSH from your local PC based on the provided hostname before!
 
@@ -71,7 +71,7 @@ You can customize your deployment by editing the `vars.tf` file.
 | :--------------------------- | :-------------- | :---------------------------------- | 
 | prefix                       | oe              | Prefix used for different resources |
 | resource_group_name          | oe-appliance    | Resource Group name                 |
-| [vm_size](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general)                      | Standard_B2ms   | VM size                             |
+| vm_size                      | Standard_B2ms   | [VM size](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general)                             |
 | data_disk                    | 100             | size of the data disk (GB)          |
 | location                     | West Europe     | Resource Location                   |
 | source_address_prefixes      | -               | External IPs allowed to access OE   |
