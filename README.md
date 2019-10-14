@@ -9,10 +9,11 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 3. Export your tenant id by executing `export tenantId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 4. Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
-6. Execute `./prep.sh` to prepare everything for Terraform
-7. Customize the `vars.tf` based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi vars.tf`)
-8. Execute `./up.sh` to deploy OfficeExpert
-9. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further installation steps)
+6. Customize the prep.sh file and adjust the location placeholder (default=West Europe) based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi prep.sh`)
+7. Execute `./prep.sh` to prepare everything for Terraform
+8. Customize the `vars.tf` based on your needs
+9. Execute `./up.sh` to deploy OfficeExpert
+10. The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9). Alternatively you can execute a final config script (only supported for the public IP setup) --> more details below [config.sh]()
 
 ## Deployment details
 
@@ -40,15 +41,16 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 
 ### config.sh
 
-The config script will finalize the Appliance configuration. This step is only supported with the public IP deployment option. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further information on how to configure the Appliance manually. 
+> Make sure sure your Appliance is reachable via SSH from your local PC based on the provided hostname before!
+
+This Script does all the necessary steps which are mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) between page 9 and 14. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further information on how to configure the Appliance manually. 
 
 - Sets Hostname and timezone
 - Configures and starts Office Experts
 - Sets a new root password
+- Creates Bot certificates based on the my-oe-secret input
 
 Execute `./config.sh "my-oe.my-domain.com" "Europe/Berlin" "my-oe-secret" "my-root-password"`
-
-Make sure sure your Appliance is reachable via SSH and the provided hostname before!
 
 ## Requirements
 
@@ -69,7 +71,7 @@ You can customize your deployment by editing the `vars.tf` file.
 | :--------------------------- | :-------------- | :---------------------------------- | 
 | prefix                       | oe              | Prefix used for different resources |
 | resource_group_name          | oe-appliance    | Resource Group name                 |
-| vm_size                      | Standard_B2ms   | VM size                             |
+| [vm_size](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general)                      | Standard_B2ms   | VM size                             |
 | data_disk                    | 100             | size of the data disk (GB)          |
 | location                     | West Europe     | Resource Location                   |
 | source_address_prefixes      | -               | External IPs allowed to access OE   |
