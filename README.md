@@ -11,7 +11,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
 6. Customize the prep.sh file and adjust the location placeholder (default=West Europe) based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi prep.sh`)
 7. Execute `./prep.sh` to prepare everything for Terraform
-8. Customize the `vars.tf` based on your needs
+8. Customize the `vars.tf` based on your needs (vi vars.tf)
 9. Execute `./up.sh` to deploy OfficeExpert
 10. The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9). Alternatively you can execute a final config script (only supported for the public IP setup) --> more details below config.sh
 
