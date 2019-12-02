@@ -61,12 +61,12 @@ variable "ip" {
 # skip everyting below if you defined an existing subnet
 # source IP addresses for OE access
 variable source_address_prefixes {
-    type    = "list"
+    type    = list
     default = ["127.0.0.1"]
 }
 
 # source IP addresses of OE bots
 variable source_address_prefixes_bots {
-    type    = "list"
+    type    = list
     default = ["127.0.0.1"]
 }
