@@ -31,26 +31,6 @@ export timezone=$2
 export secret=$3
 export rootPsw=$4
 
-az account set --subscription $subscriptionId
-
-# get vault
-export vaultName=$(az keyvault list --subscription=$subscriptionId -g $rgtf -o tsv | awk '{print $3}')
-
-## extract and export secrets
-export spSecret=$(az keyvault secret show --subscription=$subscriptionId --vault-name="$vaultName" --name sp-secret -o tsv | awk '{print $5}')
-export spId=$(az keyvault secret show --subscription=$subscriptionId --vault-name="$vaultName" --name sp-id -o tsv | awk '{print $5}')
-
-# login with service principal
-az login --service-principal -u $spId -p $spSecret --tenant $tenantId
-
-if test $? -ne 0
-then
-    echo "unable to login..."
-	exit
-else
-    echo "login done..."
-fi
-
 # get ip
 export ip=$(terraform output | grep public_ip_address | awk '{print $3}')
 

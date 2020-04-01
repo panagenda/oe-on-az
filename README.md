@@ -52,6 +52,13 @@ This Script does all the necessary steps which are mentioned in the [Setup Guide
 
 Execute `./config.sh "my-oe.my-domain.com" "Europe/Berlin" "my-oe-secret" "my-root-password"`
 
+### create-bot.sh - optional
+
+This Script creates and configures an Azure Bot application. 
+
+Execute `./create-bot.sh "pana-oe-rg" "westeurope" "my-oe.my-domain.com"`
+
+
 ## Requirements
 
 If you want to use your local environment instead of the Azure Cloud Shell you will need to fulfil the following requirements:
