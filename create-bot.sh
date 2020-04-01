@@ -16,7 +16,7 @@ endpoint="https://$3:4443/bot/messages"
 # fixed configuration
 pricingTier=S1
 name="oe-azure-bot-$RANDOM$RANDOM"
-displayName="OfficeExpert ACE"
+displayName="ACE OfficeExpert"
 iconUrl="https://files.panagenda.com/OfficeExpert/bot-icons/ace_bot_icon.png"
 
 # create app

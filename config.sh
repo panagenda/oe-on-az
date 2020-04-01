@@ -56,7 +56,7 @@ fi
 configureAppliance () {
 #configure appliance
 set +e
-echo "Please provide the root password"
+echo "In a few seconds you will be prompted for the root password"
 ssh -o "StrictHostKeyChecking no" root@$ip "echo $hostname >> /etc/hostname && \
  hostnamectl set-hostname $hostname && \
  timedatectl set-timezone $timezone && \

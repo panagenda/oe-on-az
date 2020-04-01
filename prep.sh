@@ -18,7 +18,7 @@ export sku="Standard_LRS"
 export vaultName="oevault$RANDOM$RANDOM"
 export saName="panaoesa$RANDOM$RANDOM"
 export scName="panaoesc$RANDOM$RANDOM"
-export spName="pana-oe-sp-$RANDOM$RANDOM"
+export spName="http://pana-oe-sp-$RANDOM$RANDOM"
 
 # creates a new resource group which will be used for the vault and TF state
 az group create --name "$rg" \
