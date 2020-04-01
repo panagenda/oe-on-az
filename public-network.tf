@@ -52,6 +52,7 @@ resource "azurerm_network_security_rule" "oe_ssh" {
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
 }
+
 resource "azurerm_network_security_rule" "oe_http" {
   name                        = "${var.prefix}-sec-role-http"
   count                       = var.subnet == "" ? 1 : 0
@@ -66,6 +67,7 @@ resource "azurerm_network_security_rule" "oe_http" {
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
 }
+
 resource "azurerm_network_security_rule" "oe_https" {
   name                        = "${var.prefix}-sec-role-https"
   count                       = var.subnet == "" ? 1 : 0
@@ -80,6 +82,7 @@ resource "azurerm_network_security_rule" "oe_https" {
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
 }
+
 resource "azurerm_network_security_rule" "oe_kafka" {
   name                        = "${var.prefix}-sec-role-kafka"
   count                       = var.subnet == "" ? 1 : 0
@@ -94,6 +97,7 @@ resource "azurerm_network_security_rule" "oe_kafka" {
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
 }
+
 resource "azurerm_network_security_rule" "oe_vnc" {
   name                        = "${var.prefix}-sec-role-vnc"
   count                       = var.subnet == "" ? 1 : 0
@@ -138,7 +142,7 @@ resource "azurerm_network_security_rule" "oe_incoming" {
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
 
-  depends_on = [azurerm_public_ip.oe] 
+  depends_on = [azurerm_public_ip.oe]
 }
 
 resource "azurerm_network_security_rule" "oe_bots_zookeeper" {
@@ -166,6 +170,21 @@ resource "azurerm_network_security_rule" "oe_bots_kafka" {
   source_port_range           = "*"
   destination_port_range      = "29092"
   source_address_prefixes     = var.source_address_prefixes_bots
+  destination_address_prefix  = "10.0.0.0/16"
+  resource_group_name         = azurerm_resource_group.oe.name
+  network_security_group_name = azurerm_network_security_group.oe[0].name
+}
+
+resource "azurerm_network_security_rule" "oe_public_https" {
+  name                        = "${var.prefix}-sec-role--public-https"
+  count                       = var.subnet == "" ? 1 : 0
+  priority                    = 110
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "TCP"
+  source_port_range           = "*"
+  destination_port_range      = "4443"
+  source_address_prefixes     = var.source_address_prefixes
   destination_address_prefix  = "10.0.0.0/16"
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name

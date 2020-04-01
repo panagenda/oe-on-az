@@ -52,7 +52,7 @@ else
 fi
 
 # get ip
-export ip=$(terraform output | grep ip_address | awk '{print $3}')
+export ip=$(terraform output | grep public_ip_address | awk '{print $3}')
 
 configureAccess () {
 # get public ip
