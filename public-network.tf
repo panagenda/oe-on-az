@@ -175,7 +175,7 @@ resource "azurerm_network_security_rule" "oe_bots_kafka" {
   network_security_group_name = azurerm_network_security_group.oe[0].name
 }
 
-resource "azurerm_network_security_rule" "oe_public_https" {
+  resource "azurerm_network_security_rule" "oe_public_https" {
   name                        = "${var.prefix}-sec-role--public-https"
   count                       = var.subnet == "" ? 1 : 0
   priority                    = 110
@@ -184,7 +184,7 @@ resource "azurerm_network_security_rule" "oe_public_https" {
   protocol                    = "TCP"
   source_port_range           = "*"
   destination_port_range      = "4443"
-  source_address_prefixes     = var.source_address_prefixes
+  source_address_prefix     = "*"
   destination_address_prefix  = "10.0.0.0/16"
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
