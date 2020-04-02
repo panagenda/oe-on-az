@@ -196,7 +196,6 @@ resource "azurerm_network_interface" "oe-custom-public" {
   count                     = var.subnet == "" ? 1 : 0
   location                  = azurerm_resource_group.oe.location
   resource_group_name       = azurerm_resource_group.oe.name
-  network_security_group_id = azurerm_network_security_group.oe[0].id
 
   ip_configuration {
     name                          = "${var.prefix}-nic"
@@ -204,4 +203,9 @@ resource "azurerm_network_interface" "oe-custom-public" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.oe[0].id
   }
+}
+
+resource "azurerm_subnet_network_security_group_association" "oe-custom-public-security-group" {
+  network_security_group_id = azurerm_network_security_group.oe[0].id
+  subnet_id = azurerm_subnet.oe[0].id
 }

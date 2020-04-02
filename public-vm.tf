@@ -24,7 +24,7 @@ resource "azurerm_virtual_machine" "oe-custom-public" {
     prevent_destroy = "false"
   }
 
-  depends_on = [ azurerm_managed_disk.oe ] 
+  depends_on = [ azurerm_managed_disk.oe ]
 }
 
 # creates data disk - static puplic ip (custom network deployment)
