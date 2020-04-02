@@ -6,7 +6,7 @@ set -e
 
 # exports secrets if available; export manually otherwise
 if [ -f "./creds.sh" ]; then
-  source ./creds.sh
+    source ./creds.sh
 fi
 
 az account set --subscription $subscriptionId
@@ -25,10 +25,9 @@ az group create --name "$rg" \
     --location "$location" \
     --subscription="$subscriptionId"
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "resource group couldn't be created..."
-	exit
+    exit
 else
     echo "resource group created..."
 fi
@@ -39,10 +38,9 @@ az keyvault create --name "$vaultName" \
     --location "$location" \
     --subscription=$subscriptionId
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "vault couldn't be created..."
-	exit
+    exit
 else
     echo "vault created..."
 fi
@@ -54,24 +52,22 @@ az storage account create --resource-group $rg \
     --encryption-services blob \
     --subscription=$subscriptionId
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "storage account couldn't be created..."
-	exit
+    exit
 else
     echo "storage account created..."
 fi
 
 # gets storage account key
-export accountKey=$(az storage account keys list --subscription=$subscriptionId --resource-group $rg --account-name $saName --query [0].value -o tsv )
+export accountKey=$(az storage account keys list --subscription=$subscriptionId --resource-group $rg --account-name $saName --query [0].value -o tsv)
 
 # creats storage container used by TF
 az storage container create --name $scName --account-name $saName --account-key $accountKey
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "storage container couldn't be created..."
-	exit
+    exit
 else
     echo "storage container created..."
 fi
@@ -87,10 +83,9 @@ az keyvault secret set --vault-name $vaultName \
     --name "sc-name" \
     --value "$scName"
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "secrets couldn't be saved..."
-	exit
+    exit
 else
     echo "secrets are saved in vault..."
 fi
@@ -98,10 +93,9 @@ fi
 # creates a service principal
 export sp=$(az ad sp create-for-rbac --name $spName --years 99 --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "service principal couldn't be created..."
-	exit
+    exit
 else
     echo "service principal created..."
 fi
@@ -117,10 +111,9 @@ az keyvault secret set --vault-name $vaultName \
     --name "sp-secret" \
     --value "$spSecret"
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "secrets couldn't be saved..."
-	exit
+    exit
 else
     echo "secrets are saved in vault..."
 fi

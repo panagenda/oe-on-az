@@ -3,7 +3,7 @@
 # Example: ./create-bot.sh "pana-oe-rg" "westeurope" "my-oe.my-domain.com"
 set -e
 
-if [[ -z $1 || -z $2 || -z $3 ]] ; then
+if [[ -z $1 || -z $2 || -z $3 ]]; then
     echo "usage: ./create-bot.sh <resource-group> <location> <hostname>"
     exit
 fi
@@ -20,7 +20,7 @@ displayName="ACE OfficeExpert"
 iconUrl="https://files.panagenda.com/OfficeExpert/bot-icons/ace_bot_icon.png"
 
 # create app
-appId=$(az ad app create --display-name $name --available-to-other-tenants 2> /dev/null | python3 -c "import sys, json; print(json.load(sys.stdin)['appId'])")
+appId=$(az ad app create --display-name $name --available-to-other-tenants 2>/dev/null | python3 -c "import sys, json; print(json.load(sys.stdin)['appId'])")
 
 # create bot
 az bot create --appid "$appId" --kind registration --name "$name" --resource-group "$resourceGroup" --display-name "$displayName" --endpoint "$endpoint" --location "$location" --sku "$pricingTier"

@@ -5,7 +5,7 @@ set -e
 
 # exports secrets if available; export manually otherwise
 if [ -f "./creds.sh" ]; then
-  source ./creds.sh
+    source ./creds.sh
 fi
 
 az account set --subscription $subscriptionId
@@ -23,7 +23,7 @@ export saKey=$(az keyvault secret show --subscription=$subscriptionId --vault-na
 export saName=$(az keyvault secret show --subscription=$subscriptionId --vault-name="$vaultName" --name sa-name -o tsv | awk '{print $5}')
 export scName=$(az keyvault secret show --subscription=$subscriptionId --vault-name="$vaultName" --name sc-name -o tsv | awk '{print $5}')
 
-# export secrets 
+# export secrets
 export ARM_SUBSCRIPTION_ID=$subscriptionId
 export ARM_TENANT_ID=$tenantId
 export ARM_CLIENT_ID=$spId
@@ -31,14 +31,13 @@ export ARM_CLIENT_SECRET=$spSecret
 
 # TF init
 terraform init \
-  -backend-config="access_key=$saKey" \
-  -backend-config="storage_account_name=$saName" \
-  -backend-config="container_name=$scName"
+    -backend-config="access_key=$saKey" \
+    -backend-config="storage_account_name=$saName" \
+    -backend-config="container_name=$scName"
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "tf init finished with error..."
-	exit
+    exit
 else
     echo "tf init done..."
 fi
@@ -47,10 +46,9 @@ fi
 terraform destroy -auto-approve \
     -var "source_vhd_path=$template"
 
-if test $? -ne 0
-then
+if test $? -ne 0; then
     echo "tf destroy finished with error..."
-	exit
+    exit
 else
     echo "tf destroy done..."
 fi
@@ -63,4 +61,3 @@ az group delete -y -n $rg
 
 # delete local tf folder
 rm -rf .terraform
- 
