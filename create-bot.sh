@@ -4,7 +4,7 @@
 set -e
 
 if [[ -z $1 || -z $2 || -z $3 ]] ; then
-    echo "Please provide all required parameters."
+    echo "usage: ./create-bot.sh <resource-group> <location> <hostname>"
     exit
 fi
 

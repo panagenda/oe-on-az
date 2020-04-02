@@ -9,21 +9,16 @@ if [ -f "./creds.sh" ]; then
   source ./creds.sh
 fi
 
-# customize those if needed
-export rg="pana-oe-rg"
-export rgtf="pana-oe-tf-rg"
-export secGroup="panaoe-secgroup"
-
 # get input
-if [[ -z $1 || -z $2 || -z $3 || -z $4 ]] ; then
-    echo "Please provide all required parameters."
-    exit
+if [[ -z $1 || -z $2 || -z $3 || -z $4 ]]; then
+  echo "usage: ./creds.sh <hostname> <timezone> <oe-secret> <root-password>"
+  exit
 fi
 
 export test=$(echo -n $3 | wc -c)
-if test $test -lt "8" ; then
-    echo "Please provide at least 8 chars as secret value."
-    exit
+if test $test -lt "8"; then
+  echo "Please provide at least 8 chars as secret value."
+  exit
 fi
 
 export hostname=$1
@@ -33,67 +28,68 @@ export rootPsw=$4
 
 # get ip
 export ip=$(terraform output | grep public_ip_address | awk '{print $3}')
+export rg=$(terraform output | grep resource_group | awk '{print $3}')
+export location=$(terraform output | grep location | awk '{print $3}')
+export prefix=$(terraform output | grep prefix | awk '{print $3}')
+export secGroup=$prefix-secgroup
 
-configureAccess () {
-# get public ip
-export mypublicIp=$(dig +short myip.opendns.com @resolver1.opendns.com.)
+configureAppliance() {
+  #configure appliance
+  echo "In a few seconds you will be prompted for the root password"
+  ssh -o "StrictHostKeyChecking no" root@$ip "echo $hostname >> /etc/hostname && \
+   hostnamectl set-hostname $hostname && \
+   timedatectl set-timezone $timezone && \
+   /opt/panagenda/appdata/setup/setup.sh $hostname $secret && \
+   echo $rootPsw | passwd --stdin root"
 
-# create network policy inbound rule
-az network nsg rule create -g $rg --nsg-name $secGroup -n oe-config --priority 200 \
-  --source-address-prefixes $mypublicIp --source-port-ranges "*" \
-  --destination-address-prefixes '10.0.0.0/16' --destination-port-ranges 22 --access Allow \
-  --protocol Tcp
-
-if test $? -ne 0
-then
-    echo "unable to create security policy..."
-	exit
-else
-    echo "security policy created..."
-fi
-}
-
-configureAppliance () {
-#configure appliance
-set +e
-echo "In a few seconds you will be prompted for the root password"
-ssh -o "StrictHostKeyChecking no" root@$ip "echo $hostname >> /etc/hostname && \
- hostnamectl set-hostname $hostname && \
- timedatectl set-timezone $timezone && \
- /opt/panagenda/appdata/setup/setup.sh $hostname $secret && \
- echo $rootPsw | passwd --stdin root"
-
-if test $? -ne 0
-then
+  if test $? -ne 0; then
     echo "unable to configure appliance..."
-	# no exit
-else
+    # no exit
+  else
     echo "appliance configured..."
-fi
+  fi
 }
 
-removeAccess () {
-# delete network rule
-az network nsg rule delete -g $rg --nsg-name $secGroup -n oe-config
+configureAccess() {
+  # get public ip
+  export mypublicIp=$(dig +short myip.opendns.com @resolver1.opendns.com.)
 
-if test $? -ne 0
-then
+  # create network policy inbound rule
+  az network nsg rule create -g $rg --nsg-name $secGroup -n oe-config --priority 200 \
+    --source-address-prefixes $mypublicIp --source-port-ranges "*" \
+    --destination-address-prefixes '10.0.0.0/16' --destination-port-ranges 22 --access Allow \
+    --protocol Tcp
+
+  if test $? -ne 0; then
+    echo "unable to create security policy..."
+    exit
+  else
+    echo "security policy created..."
+  fi
+}
+
+removeAccess() {
+  # delete network rule
+  az network nsg rule delete -g $rg --nsg-name $secGroup -n oe-config
+
+  if test $? -ne 0; then
     echo "unable to delete the security policy..."
-	exit
-else
+    exit
+  else
     echo "security policy deleted..."
-fi
+  fi
 }
 
 # get network policy groups
 export nsg=$(az network nsg list --resource-group $rg --subscription $subscriptionId | grep -i $secGroup | wc -l | awk '{print $1}')
+if test $nsg -ge 1; then
+  configureAccess
+fi
 
-# runs functions
-if test $nsg -ge 1
-then
-    configureAccess
-    configureAppliance
-    removeAccess
-else
-    configureAppliance
+configureAppliance
+
+./create-bot.sh $rg $location $hostname
+
+if test $nsg -ge 1; then
+  removeAccess
 fi
