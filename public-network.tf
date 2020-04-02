@@ -137,7 +137,7 @@ resource "azurerm_network_security_rule" "oe_incoming" {
   protocol                    = "TCP"
   source_port_range           = "*"
   destination_port_range      = "*"
-  source_address_prefixes     = ["127.0.0.1,${azurerm_public_ip.oe[0].ip_address}"]
+  source_address_prefixes     = ["${azurerm_public_ip.oe[0].ip_address}"]
   destination_address_prefix  = "10.0.0.0/16"
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
