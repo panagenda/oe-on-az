@@ -9,7 +9,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 3. Export your tenant id by executing `export tenantId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 4. Export your subscriptions id by executing `export subscriptionId="xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx"`
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
-6. Customize the prep.sh file and adjust the location placeholder (default=West Europe) based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi prep.sh`)
+6. Customize the prep.sh file and adjust the location placeholder (default=westeurope) based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi prep.sh`)
 7. Execute `./prep.sh` to prepare everything for Terraform
 8. Customize the `vars.tf` based on your needs (vi vars.tf)
 9. Execute `./up.sh` to deploy OfficeExpert
@@ -18,6 +18,8 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 ## Deployment details
 
 The above steps steps deploying the following Azure resources.
+
+# TODO 
 
 ### prep.sh
 
@@ -80,7 +82,7 @@ You can customize your deployment by editing the `vars.tf` file.
 | resource_group_name          | oe-appliance    | Resource Group name                 |
 | vm_size                      | Standard_B2ms   | [VM size](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general)                             |
 | data_disk                    | 100             | size of the data disk (GB)          |
-| location                     | West Europe     | Resource Location                   |
+| location                     | westeurope     | Resource Location                   |
 | source_address_prefixes      | -               | External IPs allowed to access OE   |
 | source_address_prefixes_bots | -               | Bots IPs allowed to access OE       |
 | rg                           | -               | Resource Group of an existing VNet  |

@@ -13,7 +13,7 @@ az account set --subscription $subscriptionId
 
 # customize those if needed
 export rg="pana-oe-tf-rg"
-export location="West Europe"
+export location="westeurope"
 export sku="Standard_LRS"
 export vaultName="oevault$RANDOM$RANDOM"
 export saName="panaoesa$RANDOM$RANDOM"

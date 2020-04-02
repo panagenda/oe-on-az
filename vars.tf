@@ -20,7 +20,7 @@ variable prefix {
 
 # location
 variable location {
-    default = "West Europe"
+    default = "westeurope"
 }
 
 # tags
