@@ -4,7 +4,7 @@ resource "azurerm_virtual_machine" "oe" {
   count                 = var.subnet == "" ? 0 : 1
   location              = azurerm_resource_group.oe.location
   resource_group_name   = azurerm_resource_group.oe.name
-  network_interface_ids = ["${azurerm_network_interface.oe[0].id}"]
+  network_interface_ids = [azurerm_network_interface.oe[0].id]
   vm_size               = var.vm_size
   # deletes disks on destroy
   delete_os_disk_on_termination = true

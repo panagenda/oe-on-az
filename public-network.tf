@@ -86,7 +86,7 @@ resource "azurerm_network_security_rule" "oe_https" {
 resource "azurerm_network_security_rule" "oe_vnc" {
   name                        = "${var.prefix}-sec-role-vnc"
   count                       = var.subnet == "" ? 1 : 0
-  priority                    = 105
+  priority                    = 104
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "TCP"
@@ -98,46 +98,16 @@ resource "azurerm_network_security_rule" "oe_vnc" {
   network_security_group_name = azurerm_network_security_group.oe[0].name
 }
 
-resource "azurerm_network_security_rule" "oe_kafka" {
-  name                        = "${var.prefix}-sec-role-kafka"
-  count                       = var.subnet == "" ? 1 : 0
-  priority                    = 104
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "29092"
-  source_address_prefixes     = ["127.0.0.1"]
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = azurerm_resource_group.oe.name
-  network_security_group_name = azurerm_network_security_group.oe[0].name
-}
-
-resource "azurerm_network_security_rule" "oe_zookeeper" {
-  name                        = "${var.prefix}-sec-role-zookeeper"
-  count                       = var.subnet == "" ? 1 : 0
-  priority                    = 106
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "22181"
-  source_address_prefixes     = ["127.0.0.1"]
-  destination_address_prefix  = "10.0.0.0/16"
-  resource_group_name         = azurerm_resource_group.oe.name
-  network_security_group_name = azurerm_network_security_group.oe[0].name
-}
-
 resource "azurerm_network_security_rule" "oe_incoming" {
   name                        = "${var.prefix}-sec-role-oe-incoming"
   count                       = var.subnet == "" ? 1 : 0
-  priority                    = 107
+  priority                    = 105
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "TCP"
   source_port_range           = "*"
   destination_port_range      = "*"
-  source_address_prefixes     = ["${azurerm_public_ip.oe[0].ip_address}"]
+  source_address_prefixes     = ["127.0.0.1", azurerm_public_ip.oe[0].ip_address]
   destination_address_prefix  = "10.0.0.0/16"
   resource_group_name         = azurerm_resource_group.oe.name
   network_security_group_name = azurerm_network_security_group.oe[0].name
@@ -148,7 +118,7 @@ resource "azurerm_network_security_rule" "oe_incoming" {
 resource "azurerm_network_security_rule" "oe_bots_zookeeper" {
   name                        = "${var.prefix}-sec-role-oe-bots-zookeeper"
   count                       = var.subnet == "" ? 1 : 0
-  priority                    = 108
+  priority                    = 106
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "TCP"
@@ -163,7 +133,7 @@ resource "azurerm_network_security_rule" "oe_bots_zookeeper" {
 resource "azurerm_network_security_rule" "oe_bots_kafka" {
   name                        = "${var.prefix}-sec-role-oe-bots-kafka"
   count                       = var.subnet == "" ? 1 : 0
-  priority                    = 109
+  priority                    = 107
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "TCP"
@@ -178,7 +148,7 @@ resource "azurerm_network_security_rule" "oe_bots_kafka" {
   resource "azurerm_network_security_rule" "oe_public_https" {
   name                        = "${var.prefix}-sec-role--public-https"
   count                       = var.subnet == "" ? 1 : 0
-  priority                    = 110
+  priority                    = 108
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "TCP"
