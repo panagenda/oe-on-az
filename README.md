@@ -17,9 +17,9 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 
 ## Deployment details
 
-The above steps steps deploying the following Azure resources.
+The above steps steps deploying the following Azure resources:
 
-# TODO 
+![alt text](azure_deployment.png) 
 
 ### prep.sh
 
@@ -56,10 +56,13 @@ Execute `./config.sh "my-oe.my-domain.com" "Europe/Berlin" "my-oe-secret" "my-ro
 
 ### create-bot.sh - optional
 
-This Script creates and configures an Azure Bot application. 
+This Script creates and configures an Azure Bot application.  
 
-Execute `./create-bot.sh "pana-oe-rg" "westeurope" "my-oe.my-domain.com"`
+Execute `./create-bot.sh "my-oe-resource-group" "my-azure-location" "my-oe.my-domain.com"`
 
+In case you did not change the resource group in the `vars.tf` file and your company is located in Europe:
+
+e.g: `./create-bot.sh "pana-oe-rg" "westeurope" "my-oe.my-domain.com"`
 
 ## Requirements
 
