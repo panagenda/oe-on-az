@@ -17,7 +17,7 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 
 ## Deployment details
 
-The above steps steps deploying the following Azure resources:
+Executing the steps from above will deploy the following Azure resources:
 
 ![alt text](azure_deployment.png) 
 
