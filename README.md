@@ -11,9 +11,19 @@ This repository contains everything needed to deploy panagenda OfficeExpert on A
 5. Export the template URL we provided you with `export template="https://xxxx.blob.core.windows.net/xxxx/xxxx.vhd"`
 6. Customize the prep.sh file and adjust the location placeholder (default=westeurope) based on your needs (you can either use the [Azure Cloud Shell editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor) or `vi prep.sh`)
 7. Execute `./prep.sh` to prepare everything for Terraform
-8. Customize the `vars.tf` based on your needs (vi vars.tf)
+8. Please edit the `vars.tf` to configure remote access (https, ssh) and optional custom virtual network (vi vars.tf)
 9. Execute `./up.sh` to deploy OfficeExpert
-10. The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9). Alternatively you can execute a final config script (only supported for the public IP setup) --> more details below config.sh
+10. The `up.sh` will print the ip address of the deployed Appliance. Please create a DNS entry for this ip address.
+11. The final steps depend on your configuration:
+
+For public ip (default):
+* Execute `./config.sh "my-oe.my-domain.com" "`Europe/Berlin" "my-oe-secret" "my-root-password"` --> more details below
+* The `config.sh` script will configure the Appliance and also create the Azure Bot application for you
+* The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9).
+
+For custom virtual network (if you configured a custom network in the `vars.tf`file):
+* Execute `./create-bot.sh "pana-oe-rg" "westeurope" "my-oe.my-domain.com"` --> more details below
+* The Azure resources are now successfully deployed. Please continue with the remaining setup steps mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) (Page 9).
 
 ## Deployment details
 
@@ -41,9 +51,9 @@ This will run the Terraform project to deploy everything related to OfficeExpert
 - Network Interface (public IP only)
 - Network Security Group (public IP only)
 
-### config.sh - optional
+### config.sh
 
-> Make sure sure your Appliance is reachable via SSH from your local PC based on the provided hostname before!
+> The script will create a temporal Azure Security Group rule that allows SSH connection from the Azure Shell to your Appliance!
 
 This Script does all the necessary steps which are mentioned in the [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) between page 9 and 14. Review our [Setup Guide](https://img.panagenda.com/download/OfficeExpert/OfficeExpert_SetupGuide_EN.pdf) for further information on how to configure the Appliance manually. 
 
@@ -54,7 +64,7 @@ This Script does all the necessary steps which are mentioned in the [Setup Guide
 
 Execute `./config.sh "my-oe.my-domain.com" "Europe/Berlin" "my-oe-secret" "my-root-password"`
 
-### create-bot.sh - optional
+### create-bot.sh
 
 This Script creates and configures an Azure Bot application.  
 
@@ -81,8 +91,8 @@ You can customize your deployment by editing the `vars.tf` file.
 
 | Variables                    | Default value   | Details                             |
 | :--------------------------- | :-------------- | :---------------------------------- | 
-| prefix                       | oe              | Prefix used for different resources |
-| resource_group_name          | oe-appliance    | Resource Group name                 |
+| prefix                       | panaoe              | Prefix used for different resources |
+| resource_group_name          | pana-oe-rg    | Resource Group name                 |
 | vm_size                      | Standard_B2ms   | [VM size](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general)                             |
 | data_disk                    | 100             | size of the data disk (GB)          |
 | location                     | westeurope     | Resource Location                   |
