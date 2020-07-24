@@ -14,7 +14,7 @@ resource "azurerm_virtual_machine" "oe" {
     name              = "${var.prefix}-osdisk"
     os_type           = "Linux"
     managed_disk_id   = azurerm_managed_disk.oe.id
-    managed_disk_type = var.data_disk_type
+    managed_disk_type = var.os_disk_type
     caching           = "ReadWrite"
     create_option     = "Attach"
   }
