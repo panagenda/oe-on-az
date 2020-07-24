@@ -17,7 +17,7 @@ endpoint="https://$3:4443/bot/messages"
 pricingTier=S1
 name="pana-oe-bot-$RANDOM$RANDOM"
 displayName="ACE OfficeExpert"
-iconUrl="https://files.panagenda.com/OfficeExpert/bot-icons/ace_bot_icon.png"
+iconUrl="https://files.panagenda.com/OfficeExpert/bot-icons/ace_bot_icon_v2.png"
 
 # create app
 appId=$(az ad app create --display-name $name --available-to-other-tenants 2>/dev/null | python3 -c "import sys, json; print(json.load(sys.stdin)['appId'])")
