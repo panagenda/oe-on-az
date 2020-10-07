@@ -178,4 +178,5 @@ resource "azurerm_network_interface" "oe-custom-public" {
 resource "azurerm_subnet_network_security_group_association" "oe-custom-public-security-group" {
   network_security_group_id = azurerm_network_security_group.oe[0].id
   subnet_id = azurerm_subnet.oe[0].id
+  count = var.subnet == "" ? 1 : 0
 }
