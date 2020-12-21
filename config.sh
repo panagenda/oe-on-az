@@ -27,10 +27,10 @@ export secret=$3
 export rootPsw=$4
 
 # get ip
-export ip=$(terraform output | grep public_ip_address | awk '{print $3}')
-export rg=$(terraform output | grep resource_group | awk '{print $3}')
-export location=$(terraform output | grep location | awk '{print $3}')
-export prefix=$(terraform output | grep prefix | awk '{print $3}')
+export ip=$(terraform output | grep public_ip_address | awk '{print $3}' | tr -d '"')
+export rg=$(terraform output | grep resource_group | awk '{print $3}' | tr -d '"')
+export location=$(terraform output | grep location | awk '{print $3}' | tr -d '"')
+export prefix=$(terraform output | grep prefix | awk '{print $3}' | tr -d '"')
 export secGroup=$prefix-secgroup
 
 configureAppliance() {
