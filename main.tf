@@ -2,6 +2,7 @@ provider "azurerm" {
     version = "~>2.0.0"
     features {
     }
+    environment = "public"
 }
 
 provider "random" {
@@ -11,5 +12,6 @@ provider "random" {
 terraform {
     backend "azurerm" {
         key = "oe.terraform.tfstate"
+        environment = "public"
     }
 }
