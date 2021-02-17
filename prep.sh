@@ -35,8 +35,7 @@ fi
 az keyvault create --name "$vaultName" \
     --resource-group $rg \
     --location "$location" \
-    --subscription=$subscriptionId \
-    --enable-soft-delete true
+    --subscription=$subscriptionId
 
 if test $? -ne 0; then
     echo "vault couldn't be created..."
