@@ -3,9 +3,18 @@
 # Example: ./create-bot.sh "pana-oe-rg" "westeurope" "my-oe.my-domain.com"
 set -e
 
+az account show --query "environmentName" | grep -q Government
+
 if [[ -z $1 || -z $2 || -z $3 ]]; then
     echo "usage: ./create-bot.sh <resource-group> <location> <hostname>"
     exit
+fi
+
+echo "Checking Azure environment"
+az account show --query "environmentName" | grep -q Government
+if [ $? -eq 0 ]; then
+    echo "Aborting Bot deployment because it is not supported in a GCC tenant"
+    exit 0
 fi
 
 # customer specifc configuration
