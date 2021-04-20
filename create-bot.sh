@@ -25,12 +25,16 @@ displayName="ACE OfficeExpert"
 iconUrl="https://files.panagenda.com/OfficeExpert/bot-icons/ace_bot_icon_v2.png"
 
 # create app
+echo "Creating bot application..."
 appId=$(az ad app create --display-name $name --available-to-other-tenants 2>/dev/null | python3 -c "import sys, json; print(json.load(sys.stdin)['appId'])")
 
 # create bot
+echo "Creating bot..."
 az bot create --appid "$appId" --kind registration --name "$name" --resource-group "$resourceGroup" --display-name "$displayName" --endpoint "$endpoint" --location "$location" --sku "$pricingTier"
 
 # set icon url (can't be done with create command)
+echo "Updating the bot icon URL..."
 az bot update --name "$name" --resource-group "$resourceGroup" --icon-url $iconUrl
 
+echo "Activating Microsoft Teams integration..."
 az bot msteams create --name "$name" --resource-group "$resourceGroup"
