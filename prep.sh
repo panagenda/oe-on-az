@@ -94,7 +94,7 @@ fi
 # check if an existing service principal is configured
 if [ -z "$spId" ] && [ -z "$spSecret" ]; then
 
-    echo "creating service principal"
+    echo "creating service principal..."
 
     # creates a service principal
     export sp=$(az ad sp create-for-rbac --name $spName --years 99 --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
