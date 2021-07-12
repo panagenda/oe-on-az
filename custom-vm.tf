@@ -1,6 +1,6 @@
 # creates virtual machine - static private ip
 resource "azurerm_virtual_machine" "oe" {
-  name                  = "${var.prefix}-vm"
+  name                  = "${var.vm_name}"
   count                 = var.subnet == "" ? 0 : 1
   location              = azurerm_resource_group.oe.location
   resource_group_name   = azurerm_resource_group.oe.name

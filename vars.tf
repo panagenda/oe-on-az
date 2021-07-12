@@ -15,17 +15,22 @@ variable data_disk_size {
 
 # data disk type
 variable data_disk_type {
-    default = "StandardSSD_LRS"
+    default = "Premium_LRS"
 }
 
 # os disk type
 variable os_disk_type {
-    default = "StandardSSD_LRS"
+    default = "Premium_LRS"
 }
 
 # prefix
 variable prefix {
     default = "panaoe"
+}
+
+# vm name
+variable vm_name {
+    default = "panaoe-vm"
 }
 
 # location
