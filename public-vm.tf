@@ -1,6 +1,6 @@
 # creates virtual machine - static puplic ip (custom network deployment)
 resource "azurerm_virtual_machine" "oe-custom-public" {
-  name                  = "${var.prefix}-vm"
+  name                  = "${var.vm_name}"
   count                 = var.subnet == "" ? 1 : 0
   location              = azurerm_resource_group.oe.location
   resource_group_name   = azurerm_resource_group.oe.name
