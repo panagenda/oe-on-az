@@ -18,6 +18,8 @@ export vaultName="oevault$RANDOM$RANDOM"
 export saName="panaoesa$RANDOM$RANDOM"
 export scName="panaoesc$RANDOM$RANDOM"
 export spName="http://pana-oe-sp-$RANDOM$RANDOM"
+export spId=""
+export spSecret=""
 
 # creates a new resource group which will be used for the vault and TF state
 az group create --name "$rg" \
@@ -89,18 +91,27 @@ else
     echo "secrets are saved in vault..."
 fi
 
-# creates a service principal
-export sp=$(az ad sp create-for-rbac --name $spName --years 99 --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
+# check if an existing service principal is configured
+if [ -z "$spId" ] && [ -z "$spSecret" ]; then
 
-if test $? -ne 0; then
-    echo "service principal couldn't be created..."
-    exit
+    echo "creating service principal"
+
+    # creates a service principal
+    export sp=$(az ad sp create-for-rbac --name $spName --years 99 --role="Contributor" --scopes="/subscriptions/$subscriptionId" -o tsv)
+
+    if test $? -ne 0; then
+        echo "service principal couldn't be created..."
+        exit
+    else
+        echo "service principal created..."
+    fi
+
+    # gets id and secret
+    export spSecret=$(echo $sp | awk '{print $4}')
+    export spId=$(echo $sp | awk '{print $1}')
 else
-    echo "service principal created..."
+    echo "using configured service principal..."
 fi
-# gets id and secret
-export spSecret=$(echo $sp | awk '{print $4}')
-export spId=$(echo $sp | awk '{print $1}')
 
 # save secrets to vault
 az keyvault secret set --vault-name $vaultName \
